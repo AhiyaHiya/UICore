@@ -1,2 +1,6 @@
+# files
+*.aps
+
+# folders
 build
 venv_*
