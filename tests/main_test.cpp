@@ -1,5 +1,8 @@
-#include \"UICore/UICore.h\"
-int main() {
-    UICore::showImageWindow(\"example.png\");
+
+#include "UICore/UICore.h"
+
+int main()
+{
+    UICore::ShowImageWindow("example.png");
     return 0;
 }
