@@ -1,10 +1,15 @@
-from conans import ConanFile, CMake
+from conan import ConanFile
+from conan.tools.cmake import CMake, cmake_layout
+
 class UICoreConan(ConanFile):
     name = "UICore"
     version = "1.0"
-    settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake"
+    settings = "os", "arch", "compiler", "build_type"
     exports_sources = "src/*", "include/*", "CMakeLists.txt"
+    generators = "CMakeDeps", "CMakeToolchain"
+
+    def layout(self):
+        cmake_layout(self)
 
     def build(self):
         cmake = CMake(self)
@@ -21,3 +26,4 @@ class UICoreConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["UICore"]
+
