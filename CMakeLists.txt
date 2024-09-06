@@ -22,4 +22,6 @@ target_include_directories(UICore
         "${CMAKE_CURRENT_LIST_DIR}/resources"
 )
 
-add_subdirectory(tests)
+if (DEFINED TESTING_ENABLED)
+    add_subdirectory(tests)
+endif()
