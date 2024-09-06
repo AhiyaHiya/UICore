@@ -1,11 +1,12 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout
+from conan.tools.files import copy
 
 class UICoreConan(ConanFile):
-    name = "UICore"
+    name = "uicore"
     version = "1.0"
     settings = "os", "arch", "compiler", "build_type"
-    exports_sources = "src/*", "include/*", "CMakeLists.txt"
+    exports_sources = "src/*", "include/*", "resources/*", "CMakeLists.txt"
     generators = "CMakeDeps", "CMakeToolchain"
 
     def layout(self):
@@ -17,13 +18,18 @@ class UICoreConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("*.h", dst="include", src="include")
-        self.copy("*.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.dylib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
+        # Use the modern 'copy' method from conan.tools.files
+        copy(self, "*.h", src="include", dst=f"{self.package_folder}/include")
+        copy(self, "*.lib", src="lib", dst=f"{self.package_folder}/lib", keep_path=False)
+        copy(self, "*.dll", src="bin", dst=f"{self.package_folder}/bin", keep_path=False)
+        copy(self, "*.so", src="lib", dst=f"{self.package_folder}/lib", keep_path=False)
+        copy(self, "*.dylib", src="lib", dst=f"{self.package_folder}/lib", keep_path=False)
+        copy(self, "*.a", src="lib", dst=f"{self.package_folder}/lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["UICore"]
+        # Provide the libraries to link with
+        self.cpp_info.libs = ["uicore"]
 
+    def package_id(self):
+        # Optional: Manage package ID compatibility
+        self.info.requires.full_package_mode()  # Ensures full compatibility
